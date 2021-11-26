@@ -1,0 +1,95 @@
+'****************************************************************
+'*  Name    : LCD Activation Illustration                       *
+'*  Author  : [select VIEW...EDITOR OPTIONS]                    *
+'*  Notice  : Copyright (c) 2010 [select VIEW...EDITOR OPTIONS] *
+'*          : All Rights Reserved                               *
+'*  Date    : 6/3/2010                                          *
+'*  Version : 1.0                                               *
+'*  Notes   :                                                   *
+'*          :                                                   *
+'****************************************************************
+
+'Pre-Processor Directives
+ Device=16F877A
+'Crystal Freqency Setting
+ XTAL 20
+'Tris I/O Definition
+ TRISB=%00000100
+ TRISC=$00000000
+ 
+'Development Board Initialization
+ High PORTB.7     
+ DelayMS 1000
+ Low PORTB.7
+ DelayMS 1000
+'LCD ACTIVATION DEFINITION
+  main:
+  'DEFINE LCD TYPE
+   Declare LCD_TYPE ALPHA
+  'SET LCD DATA PINS
+   Declare LCD_DTPIN PORTB.4        
+   'SET LCD REGISTER SELECT PINS
+    Declare LCD_RSPIN PORTB.3
+   'SET LCD ENABLE PIN ADDRESS
+    Declare LCD_ENPIN PORTB.2
+   'SET LCD INTERFACE LINES
+    Declare LCD_INTERFACE 4
+   'SET LCD LINES
+    Declare LCD_LINES2
+   'CLEAR LCD SCREEN
+    Cls
+  
+   
+'PORTA Analog Conversion
+ALL_DIGITAL false
+
+'Define 8-bit Analog Resolution
+Declare ADIN_RES 8
+
+'Define 50us sample time
+Declare ADIN_STIME 50
+
+'Variable Declaration
+Dim ac4 As Byte
+ 
+ 
+'ADC Illustration
+
+    ac4= ADIn 0
+    
+    SerOut PORTB.1,16468,["Diameter OF WIRE", Dec ac4,13,10]
+      Print $FE,$1,"Diameter OF WIRE"
+    Print $FE,$C0,Dec ac4
+    DelayMS 500
+    If ac4<20 Then
+    
+    SerOut PORTB.1,16468,["Diameter OF WIRE",Dec ac4,13,10]
+     Print $FE,$1,"Diameter OF WIRE"
+    Print $FE,$C0,Dec ac4
+    DelayMS 500
+    Else
+     
+      If ac4<40 Then
+    
+    SerOut PORTB.1,16468,["Diameter OF WIRE", Dec ac4,13,10]
+     Print $FE,$1,"Diameter OF WIRE"
+    Print $FE,$C0, Dec ac4
+    DelayMS 500
+    Else
+     Low PORTB.5
+      If ac4<60 Then
+     
+    SerOut PORTB.1,16468,["Diameter OF WIRE", Dec ac4,13,10]
+     Print $FE,$1,"Diameter OF WIRE"
+    Print $FE,$C0, Dec ac4
+    DelayMS 500
+    Else
+     
+    EndIf
+    EndIf
+    EndIf 
+  DelayMS 500
+    
+GoTo main
+        
+    

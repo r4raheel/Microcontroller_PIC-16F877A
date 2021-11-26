@@ -1,0 +1,78 @@
+'Pre-Processor Directives
+ Device=16F877A
+'Crystal Freqency Setting
+ XTAL 20
+'Tris I/O Definition
+ TRISB=%00000100
+ TRISC=%00001100
+
+
+   
+'LCD ACTIVATION DEFINITION
+
+  'DEFINE LCD TYPE
+   Declare LCD_TYPE ALPHA
+  'SET LCD DATA PINS
+   Declare LCD_DTPIN PORTB.4        
+   'SET LCD REGISTER SELECT PINS
+    Declare LCD_RSPIN PORTB.3
+   'SET LCD ENABLE PIN ADDRESS
+    Declare LCD_ENPIN PORTB.2
+   'SET LCD INTERFACE LINES
+    Declare LCD_INTERFACE 4
+   'SET LCD LINES
+    Declare LCD_LINES2
+    'CLEAR LCD SCREEN
+    Cls
+     Print $FE,$1,"Welcome To INDUS "
+   
+      
+  
+  'Variable Definition
+  
+ Dim c As Word
+ c= ERead 0
+ 
+
+  If PORTC.3=1 Then
+  c=0
+   'Data in EEPROM
+  EWrite 0,[c]
+  
+  
+ 
+                     
+'Development Board Initialization
+ High PORTB.7     
+ DelayMS 1000
+ Low PORTB.7
+ DelayMS 1000
+
+ 
+  
+  
+main:
+  
+  Print $FE,$1,Dec c,"METER OF WIRE:"  
+  
+  'TX/RX OF DATA FROM PIC TO PC
+  SerOut PORTB.1,16468,["METER OF WIRE:" , Dec c,13,10]
+  
+  DelayMS 200
+  
+  EWrite 0,[c]
+   If PORTC.2=1 Then
+   c=c+1 
+  
+  Print $FE,$1,Dec c,"METER OF WIRE:"  
+ 
+ 'TX/RX OF DATA FROM PIC TO PC 
+  SerOut PORTB.1,16468,["METER OF WIRE:" , Dec c,13,10]
+   
+   DelayMS 200
+   'Saving data in EEPROM
+   EWrite 0,[c]
+   
+   EndIf
+   EndIf
+ GoTo main 
